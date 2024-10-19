@@ -5,6 +5,16 @@ from fastapi import FastAPI, HTTPException, status, Request
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
+
+from contextlib import asynccontextmanager
+from typing import AsyncIterator
+
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.inmemory import InMemoryBackend
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -17,13 +27,25 @@ from app.models import CustomResponse
 def custom_generate_unique_id(route: APIRoute) -> str:
     return f"{route.tags[0]}-{route.name}"
 
+limiter = Limiter(key_func=get_remote_address, application_limits=["20/day", "2/minute"])
+
+@asynccontextmanager
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    FastAPICache.init(InMemoryBackend(), expire=settings.CACHE_EXPIRE)
+    yield
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     generate_unique_id_function=custom_generate_unique_id,
     default_response_class=CustomResponse,
+    lifespan=lifespan
 )
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+app.add_middleware(SlowAPIMiddleware)
 
 # Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:

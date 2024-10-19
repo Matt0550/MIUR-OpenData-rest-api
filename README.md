@@ -30,6 +30,7 @@ All the data used in this project is owned by the respective owners and is used 
 ## Features
 
 - Get and query all the data about the schools in Italy
+- Cache the data to reduce the number of requests to the MIUR/MIM Open-Data website
 
 
 ## API Endpoints
@@ -98,19 +99,24 @@ All the data used in this project is owned by the respective owners and is used 
 }
 ```
 
+## Cache
+The API uses a cache system to reduce the number of requests to the MIUR/MIM Open-Data website. The cache expiration time is set to 1 hour by default. You can change it using the `CACHE_EXPIRE` environment variable. The cache is stored in memory and is not persistent. Soon I will add the possibility to use Redis as a cache.
+
 ## Public instance of the API
 An instance of the API is available at https://miur-api.cloud.matteosillitti.it/
 
-## Environment Variables (docker)
+Limited to 20 requests per day (2 requests per minute). If you need more requests, contact me.
+
+## Environment Variables
 | Variable | Description | Default |
 | :--- | :--- | :--- |
-| `PUID` | User ID | `1000` |
-| `PGID` | Group ID | `1000` |
+| `PUID` | User ID (docker) | `1000` |
+| `PGID` | Group ID (docker) | `1000` |
+| `DOMAIN` | Domain of the API | `localhost` |
+| `PORT` | Port of the API | `5000` |
+| `CACHE_EXPIRE` | Cache expiration time in seconds | `3600` (1 hour) |
 
 ## Installation - Using Docker Compose (recommended)
-> [!WARNING]
-> SOON. The image is not available yet.
-
 Clone the project
 
 ```yml
@@ -120,8 +126,8 @@ services:
   miur_opendata_rest_api:
     image: matt0550/miur-opendata-rest-api
     environment:
-      - PUID=1000     # UID of the user inside the container, make sure it has access to the database file
-      - PGID=1000     # GID of the user inside the container, make sure it has access to the database file
+      - PUID=1000
+      - PGID=1000
     ports:
       - 5000:5000
     restart: unless-stopped
@@ -130,9 +136,6 @@ services:
 Run the container with `docker-compose up -d`
 
 ## Installation - Using Docker Run
-> [!WARNING]
-> SOON. The image is not available yet.
-
 Pull the image
 
 ```bash
@@ -209,5 +212,5 @@ Mail: <a href="mailto:mail@matteosillitti.it">me@matteosillitti.it</a>
 [license-url]: https://github.com/Matt0550/MIUR-OpenData-rest-api/blob/master/LICENSE
 [discord-shield]: https://img.shields.io/discord/828990499507404820?style=for-the-badge
 [discord-url]: https://go.matteosillitti.it/discord
-[docker-shield]: https://img.shields.io/docker/pulls/matt0550/MIUR-OpenData-rest-api?style=for-the-badge
-[docker-url]: https://hub.docker.com/r/matt0550/MIUR-OpenData-rest-api
+[docker-shield]: https://img.shields.io/docker/pulls/matt0550/miur-opendata-rest-api?style=for-the-badge
+[docker-url]: https://hub.docker.com/r/matt0550/miur-opendata-rest-api

@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/v1"
 
     DOMAIN: str = "localhost"
-    PORT: int = 8000
+    PORT: int = 5000
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
 
     @computed_field  # type: ignore[prop-decorator]
@@ -41,6 +41,8 @@ class Settings(BaseSettings):
     ] = []
 
     PROJECT_NAME: str
+
+    CACHE_EXPIRE: int = 60 * 60 * 1 # 1 hour
 
 
 settings = Settings()  # type: ignore

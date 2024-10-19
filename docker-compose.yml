@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  miur_opendata_rest_api:
+    image: matt0550/miur-opendata-rest-api
+    environment:
+      - PUID=1000     # UID of the user inside the container, make sure it has access to the database file
+      - PGID=1000     # GID of the user inside the container, make sure it has access to the database file
+      - PROJECT_NAME="MIUR opendata API"
+    ports:
+      - 5000:5000
+    restart: unless-stopped

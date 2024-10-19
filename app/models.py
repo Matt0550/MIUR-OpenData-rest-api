@@ -1,10 +1,7 @@
-from enum import Enum
+from datetime import datetime
 from typing import Any
-import uuid
-from datetime import datetime, date
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, EmailStr, field_validator
-from sqlmodel import Field, SQLModel
+from pydantic import BaseModel, Field
 
 
 ##############
@@ -31,6 +28,9 @@ class SchoolBase(BaseModel):
 class SchoolsPaginated(BaseModel):
     schools: list[SchoolBase]
     total: int = 0
+    timestamp: str = Field(default_factory=lambda: datetime.now().isoformat())
+    cached: bool = False
+    cache_expires: str | None = None
 ####################################
 
 # New response class
@@ -40,7 +40,7 @@ class CustomResponse(JSONResponse):
         content = ResponseStructure(details=content, success=False if status_code != 200 else True, status_code=status_code)
         super().__init__(content=content.dict(), status_code=status_code, *args, **kwargs)
 
-class ResponseStructure(SQLModel):
+class ResponseStructure(BaseModel):
     details: Any
     success: bool = True
     status_code: int

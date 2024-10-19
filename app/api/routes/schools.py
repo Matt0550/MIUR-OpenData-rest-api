@@ -5,13 +5,16 @@ from app.models import (
     SchoolBase,
     SchoolsPaginated
 )
+from fastapi_cache.decorator import cache
+
 
 from app.scraping import sparql
 
 router = APIRouter(default_response_class=CustomResponse)
 
 @router.get("/", response_model=SchoolsPaginated)
-async def get_schools(school_filters: SchoolBase = None, limit: int = 50, exclude_par: bool = False, exclude_aut: bool = False):
+@cache()
+async def get_schools(school_filters: SchoolBase = None, limit: int = 50, exclude_par: bool = False, exclude_aut: bool = False) -> SchoolsPaginated:
     """
     Get schools from SPARQL with optional filters.
     """
