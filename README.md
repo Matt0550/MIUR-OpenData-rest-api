@@ -39,7 +39,7 @@ All the data used in this project is owned by the respective owners and is used 
 
 ### Base URL
 ```
-  https://miur-api.cloud.matteosillitti.it/
+  https://miur-api.cloud.matteosillitti.it/v1/
 ```
 
 ### Schools
