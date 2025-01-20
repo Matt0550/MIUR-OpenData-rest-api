@@ -182,11 +182,11 @@ Start the REST API (after setting the environment variables)
 ## Help - feedback
 You can contact me on:
 
-Discord: https://go.matteosillitti.it/discord
+Discord: https://matt05.it/discord
 
-Telegram: https://go.matteosillitti.it/telegram
+Telegram: https://matt05.it/telegram
 
-Mail: <a href="mailto:mail@matteosillitti.it">me@matteosillitti.it</a>
+Mail: <a href="mailto:mail@matteosillitti.com">mail@matteosillitti.com</a>
 
 ## License
 
@@ -211,6 +211,6 @@ Mail: <a href="mailto:mail@matteosillitti.it">me@matteosillitti.it</a>
 [license-shield]: https://img.shields.io/github/license/Matt0550/MIUR-OpenData-rest-api.svg?style=for-the-badge
 [license-url]: https://github.com/Matt0550/MIUR-OpenData-rest-api/blob/master/LICENSE
 [discord-shield]: https://img.shields.io/discord/828990499507404820?style=for-the-badge
-[discord-url]: https://go.matteosillitti.it/discord
+[discord-url]: https://matt05.it/discord
 [docker-shield]: https://img.shields.io/docker/pulls/matt0550/miur-opendata-rest-api?style=for-the-badge
 [docker-url]: https://hub.docker.com/r/matt0550/miur-opendata-rest-api
